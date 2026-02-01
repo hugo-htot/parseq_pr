@@ -81,11 +81,12 @@ def main():
     args, unknown = parser.parse_known_args()
     kwargs = parse_model_args(unknown)
 
-    charset_test = string.digits + string.ascii_lowercase
-    if args.cased:
-        charset_test += string.ascii_uppercase
-    if args.punctuation:
-        charset_test += string.punctuation
+    # charset_test = string.digits + string.ascii_lowercase
+    # if args.cased:
+    #     charset_test += string.ascii_uppercase
+    # if args.punctuation:
+    #     charset_test += string.punctuation
+    charset_test = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
     kwargs.update({'charset_test': charset_test})
     print(f'Additional keyword arguments: {kwargs}')
 
@@ -104,9 +105,10 @@ def main():
         rotation=args.rotation,
     )
 
-    test_set = SceneTextDataModule.TEST_BENCHMARK_SUB + SceneTextDataModule.TEST_BENCHMARK
-    if args.new:
-        test_set += SceneTextDataModule.TEST_NEW
+    # test_set = SceneTextDataModule.TEST_BENCHMARK_SUB + SceneTextDataModule.TEST_BENCHMARK
+    # if args.new:
+    #     test_set += SceneTextDataModule.TEST_NEW
+    test_set = ("words_v4",)
     test_set = sorted(set(test_set))
 
     results = {}
@@ -130,12 +132,13 @@ def main():
         mean_label_length = label_length / total
         results[name] = Result(name, total, accuracy, mean_ned, mean_conf, mean_label_length)
 
-    result_groups = {
-        'Benchmark (Subset)': SceneTextDataModule.TEST_BENCHMARK_SUB,
-        'Benchmark': SceneTextDataModule.TEST_BENCHMARK,
-    }
-    if args.new:
-        result_groups.update({'New': SceneTextDataModule.TEST_NEW})
+    # result_groups = {
+    #     'Benchmark (Subset)': SceneTextDataModule.TEST_BENCHMARK_SUB,
+    #     'Benchmark': SceneTextDataModule.TEST_BENCHMARK,
+    # }
+    # if args.new:
+    #     result_groups.update({'New': SceneTextDataModule.TEST_NEW})
+    result_groups = {"Words_v4": ("words_v4",)}
     with open(args.checkpoint + '.log.txt', 'w') as f:
         for out in [f, sys.stdout]:
             for group, subset in result_groups.items():

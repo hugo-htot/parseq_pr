@@ -138,6 +138,8 @@ class BaseSystem(pl.LightningModule, ABC):
             ned += edit_distance(pred, gt) / max(len(pred), len(gt))
             if pred == gt:
                 correct += 1
+            with open("/home/hugo/perso/projets/pr/temp/parseq_preds.txt", "a") as f:
+                f.write(f"GT: {gt} | PRED: {pred}\n")
             total += 1
             label_length += len(pred)
         return dict(output=BatchResult(total, correct, ned, confidence, label_length, loss, loss_numel))
